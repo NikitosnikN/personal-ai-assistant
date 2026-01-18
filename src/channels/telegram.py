@@ -12,13 +12,14 @@ class TelegramChannel:
         self.bot = Bot(token=self.token)
         self.offset = None
 
-    def send_message(self, text):
+    def send_message(self, text, chat_id=None):
+        recipient_chat_id = chat_id if chat_id else self.chat_id
         try:
             loop = asyncio.get_event_loop()
             loop.run_until_complete(
-                self.bot.send_message(chat_id=self.chat_id, text=text, parse_mode=ParseMode.MARKDOWN)
+                self.bot.send_message(chat_id=recipient_chat_id, text=text, parse_mode=ParseMode.MARKDOWN)
             )
-            print(f"TelegramChannel: Sent message to chat_id {self.chat_id}")
+            print(f"TelegramChannel: Sent message to chat_id {recipient_chat_id}")
             return "Message sent successfully on Telegram"
         except TelegramError as e:
             print(f"TelegramChannel Error sending message: {e}")
@@ -42,6 +43,7 @@ class TelegramChannel:
                         new_messages.append({
                             "text": message.text,
                             "date": message.date.strftime("%Y-%m-%d %H:%M"),
+                            "chat_id": message.chat_id
                         })
             return new_messages
         except TelegramError as e:

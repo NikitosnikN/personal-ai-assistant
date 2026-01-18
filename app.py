@@ -37,7 +37,7 @@ def monitor_channel(after_timestamp, config):
                 print(f"[{datetime.datetime.now()}] Invoking Personal Assistant...")
                 answer = personal_assistant.invoke(sent_message, config=config)
                 print(f"[{datetime.datetime.now()}] Assistant response: {answer}")
-                telegram.send_message(answer)
+                telegram.send_message(answer, chat_id=message.get('chat_id'))
                 print(f"[{datetime.datetime.now()}] Response sent to Telegram.")
         elif isinstance(new_messages, str):
             print(f"Telegram error: {new_messages}")
