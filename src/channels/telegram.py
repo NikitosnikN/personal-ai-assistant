@@ -11,7 +11,11 @@ class TelegramChannel:
         self.chat_id = os.getenv("CHAT_ID")
         self.bot = Bot(token=self.token)
         self.offset = None
-        self.allowed_users = [u.strip() for u in os.getenv("TELEGRAM_ALLOWED_USERS", "nikitosnik").split(",") if u.strip()]
+
+        allowed_users_env = os.getenv("TELEGRAM_ALLOWED_USERS", "")
+        self.allowed_users = [u.strip() for u in allowed_users_env.split(",") if u.strip()]
+        if not self.allowed_users:
+            print("TelegramChannel: No whitelist configured. allowing ALL users.")
 
     def send_message(self, text, chat_id=None):
         recipient_chat_id = chat_id if chat_id else self.chat_id
@@ -42,7 +46,7 @@ class TelegramChannel:
                     # print(f"Update ID: {update.update_id}, Message Date: {message.date.timestamp()}, After Timestamp: {after_timestamp}")
 
                     username = message.from_user.username if message.from_user else "Unknown"
-                    if username not in self.allowed_users:
+                    if self.allowed_users and username not in self.allowed_users:
                         print(f"TelegramChannel: Ignored message from unauthorized user: {username}")
                         continue
 
