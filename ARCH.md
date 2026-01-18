@@ -39,6 +39,7 @@ The system follows a **Supervisor/Worker** pattern where a `Manager Agent` overs
 - **Database**: SQLite is used for checkpointing agent state (memory).
 - **Communication Channels**:
   - **Telegram**: Polling-based implementation in `app.py`.
+    - **Security**: Implements a whitelist of allowed usernames configurable via `TELEGRAM_ALLOWED_USERS`.
   - **WhatsApp**: Webhook-based implementation using FastAPI in `app_whatsapp.py` (via Twilio).
   - **Slack**: SDK integration.
 

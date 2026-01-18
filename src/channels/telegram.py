@@ -11,6 +11,7 @@ class TelegramChannel:
         self.chat_id = os.getenv("CHAT_ID")
         self.bot = Bot(token=self.token)
         self.offset = None
+        self.allowed_users = [u.strip() for u in os.getenv("TELEGRAM_ALLOWED_USERS", "nikitosnik").split(",") if u.strip()]
 
     def send_message(self, text, chat_id=None):
         recipient_chat_id = chat_id if chat_id else self.chat_id
@@ -39,11 +40,18 @@ class TelegramChannel:
                 if isinstance(update, Update) and update.message:
                     message = update.message
                     # print(f"Update ID: {update.update_id}, Message Date: {message.date.timestamp()}, After Timestamp: {after_timestamp}")
+
+                    username = message.from_user.username if message.from_user else "Unknown"
+                    if username not in self.allowed_users:
+                        print(f"TelegramChannel: Ignored message from unauthorized user: {username}")
+                        continue
+
                     if message.date.timestamp() > after_timestamp:
                         new_messages.append({
                             "text": message.text,
                             "date": message.date.strftime("%Y-%m-%d %H:%M"),
-                            "chat_id": message.chat.id
+                            "chat_id": message.chat.id,
+                            "username": username
                         })
             return new_messages
         except TelegramError as e:

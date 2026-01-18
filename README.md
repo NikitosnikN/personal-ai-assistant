@@ -93,6 +93,7 @@ All the sub-agents report back to the Assistant Manager after completing their r
 
     -   **Telegram:**
         -   Create a Telegram Bot: To interact with the assistant via Telegram, you will need to create a Telegram bot and obtain the bot token. Follow this [guide](https://www.youtube.com/watch?v=ozQfKhdNjJU) to create your bot and get the necessary information.
+        -   **Whitelist Configuration:** Set `TELEGRAM_ALLOWED_USERS` in your `.env` file to a comma-separated list of allowed usernames (e.g., `nikitosnik,john_doe`). The default is `nikitosnik`.
     -   **Slack:**
         -   Create a Slack App: Follow the official Slack documentation to create a new Slack app, add the necessary OAuth scopes (refer to the provided code and documentation for the required scopes).
         -   Install the app to your workspace and obtain your Bot User OAuth Token and App-Level Token.
