@@ -43,7 +43,7 @@ class TelegramChannel:
                         new_messages.append({
                             "text": message.text,
                             "date": message.date.strftime("%Y-%m-%d %H:%M"),
-                            "chat_id": message.chat_id
+                            "chat_id": message.chat.id
                         })
             return new_messages
         except TelegramError as e:
