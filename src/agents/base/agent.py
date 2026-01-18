@@ -31,6 +31,7 @@ class Agent:
         
         print(f"--- Calling {self.name} ---")
         response = self.agent.invoke(*args, **kwargs)
+        print(f"--- {self.name} Response: {response} ---")
         return response
     
     def stream(self, *args, **kwargs):

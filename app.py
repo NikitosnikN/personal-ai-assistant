@@ -3,6 +3,7 @@ import sqlite3
 from dotenv import load_dotenv
 from src.channels.telegram import TelegramChannel
 from src.agents.personal_assistant import PersonalAssistant
+import datetime
 
 # Load .env variables
 load_dotenv()
@@ -26,13 +27,18 @@ def monitor_channel(after_timestamp, config):
     while True:
         new_messages = telegram.receive_messages(after_timestamp)
         if isinstance(new_messages, list) and new_messages:
+            print(f"[{datetime.datetime.now()}] Received {len(new_messages)} new messages.")
             for message in new_messages:
+                print(f"[{datetime.datetime.now()}] Processing message: {message['text']}")
                 sent_message = (
                     f"Message: {message['text']}\n"
                     f"Current Date/time: {message['date']}"
                 )
+                print(f"[{datetime.datetime.now()}] Invoking Personal Assistant...")
                 answer = personal_assistant.invoke(sent_message, config=config)
+                print(f"[{datetime.datetime.now()}] Assistant response: {answer}")
                 telegram.send_message(answer)
+                print(f"[{datetime.datetime.now()}] Response sent to Telegram.")
         elif isinstance(new_messages, str):
             print(f"Telegram error: {new_messages}")
 
