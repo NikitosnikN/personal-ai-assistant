@@ -35,7 +35,7 @@ The system follows a **Supervisor/Worker** pattern where a `Manager Agent` overs
 ### 2. Infrastructure & Frameworks
 - **LangGraph**: Used for defining the agent workflow and state management.
 - **LangChain**: Provides the base `create_react_agent` and LLM integration.
-- **LLM Provider**: Configurable via environment variables (supports OpenAI, Anthropic, Google, Groq).
+- **LLM Provider**: Configurable via environment variables (supports OpenAI, Anthropic, Google, Groq, OpenRouter).
 - **Database**: SQLite is used for checkpointing agent state (memory).
 - **Communication Channels**:
   - **Telegram**: Polling-based implementation in `app.py`.

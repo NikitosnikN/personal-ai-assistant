@@ -49,6 +49,14 @@ def get_llm_by_provider(model_string, temperature=0.1):
     elif llm_provider == "groq":
         from langchain_groq import ChatGroq
         llm = ChatGroq(model=model, temperature=temperature)
+    elif llm_provider == "openrouter":
+        from langchain_openai import ChatOpenAI
+        llm = ChatOpenAI(
+            model=model,
+            temperature=temperature,
+            api_key=os.environ.get("OPENROUTER_API_KEY"),
+            base_url="https://openrouter.ai/api/v1"
+        )
     # ... add elif blocks for other providers ...
     else:
         raise ValueError(f"Unsupported LLM provider: {llm_provider}")

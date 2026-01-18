@@ -50,7 +50,7 @@ All the sub-agents report back to the Assistant Manager after completing their r
 ### Prerequisites
 
 -   Python 3.9+
--   Your preferred LLM provider API keys (OpenAI, Claude, Gemini, Groq,...)
+-   Your preferred LLM provider API keys (OpenAI, Claude, Gemini, Groq, OpenRouter...)
 -   Google API credentials (for Calendar, Contacts, and Gmail access)
 -   Notion API key
 -   Tavily API key (for web research)
