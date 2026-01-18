@@ -10,6 +10,7 @@ class TelegramChannel:
         self.token = os.getenv("TELEGRAM_TOKEN")
         self.chat_id = os.getenv("CHAT_ID")
         self.bot = Bot(token=self.token)
+        self.offset = None
 
     def send_message(self, text):
         try:
@@ -26,11 +27,14 @@ class TelegramChannel:
     def receive_messages(self, after_timestamp):
         try:
             loop = asyncio.get_event_loop()
-            updates = loop.run_until_complete(self.bot.get_updates())
+            updates = loop.run_until_complete(self.bot.get_updates(offset=self.offset))
             if updates:
                  print(f"TelegramChannel: Received {len(updates)} updates via get_updates()")
             new_messages = []
             for update in updates:
+                if self.offset is None or update.update_id >= self.offset:
+                    self.offset = update.update_id + 1
+
                 if isinstance(update, Update) and update.message:
                     message = update.message
                     # print(f"Update ID: {update.update_id}, Message Date: {message.date.timestamp()}, After Timestamp: {after_timestamp}")

@@ -42,7 +42,7 @@ def monitor_channel(after_timestamp, config):
         elif isinstance(new_messages, str):
             print(f"Telegram error: {new_messages}")
 
-        after_timestamp = int(time.time())
+        # after_timestamp = int(time.time()) # Removed to fix missing messages issue. Offset is used instead.
         time.sleep(5)  # Sleep for 5 seconds before checking again
         
 
