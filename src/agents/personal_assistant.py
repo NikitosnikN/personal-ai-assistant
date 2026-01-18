@@ -1,3 +1,4 @@
+import os
 from langgraph.checkpoint.sqlite import SqliteSaver
 from src.agents.base import Agent, AgentsOrchestrator
 from src.prompts import *
@@ -13,11 +14,15 @@ class PersonalAssistant:
         # Create sqlite checkpointer for managing manager memory
         self.checkpointer = SqliteSaver(db_connection)
         
+
+        agent_model = os.getenv("AGENT_MODEL", "openai/gpt-4o-mini")
+        manager_model = os.getenv("MANAGER_MODEL", "openai/gpt-4o")
+
         # Initialize individual agents
         self.email_agent = Agent(
             name="email_agent",
             description="Email agent can manage GMAIL inbox including read and send emails",
-            model="openai/gpt-4o-mini",
+            model=agent_model,
             system_prompt=EMAIL_AGENT_PROMPT.format(date_time=get_current_date_time()),
             tools=[read_emails, send_email, find_contact_email],
             sub_agents=[],
@@ -27,7 +32,7 @@ class PersonalAssistant:
         self.calendar_agent = Agent(
             name="calendar_agent",
             description="Calendar agent can manage Google Calendar including get events and create events",
-            model="openai/gpt-4o-mini",
+            model=agent_model,
             system_prompt=CALENDAR_AGENT_PROMPT.format(date_time=get_current_date_time()),
             tools=[get_calendar_events, add_event_to_calendar, find_contact_email],
             sub_agents=[],
@@ -37,7 +42,7 @@ class PersonalAssistant:
         self.notion_agent = Agent(
             name="notion_agent",
             description="Notion agent can manage Notion including get my todo list and add task in todo list",
-            model="openai/gpt-4o-mini",
+            model=agent_model,
             system_prompt=NOTION_AGENT_PROMPT.format(date_time=get_current_date_time()),
             tools=[get_my_todo_list, add_task_in_todo_list],
             sub_agents=[],
@@ -47,7 +52,7 @@ class PersonalAssistant:
         self.slack_agent = Agent(
             name="slack_agent",
             description="Slack agent can read and send messages through Slack",
-            model="openai/gpt-4o-mini",
+            model=agent_model,
             system_prompt=SLACK_AGENT_PROMPT.format(date_time=get_current_date_time()),
             tools=[get_slack_messages, send_slack_message],
             sub_agents=[],
@@ -57,7 +62,7 @@ class PersonalAssistant:
         self.researcher_agent = Agent(
             name="researcher_agent",
             description="Researcher agent can search the web, scrape websites or LinkedIn profiles",
-            model="openai/gpt-4o-mini",
+            model=agent_model,
             system_prompt=RESEARCHER_AGENT_PROMPT.format(date_time=get_current_date_time()),
             tools=[search_web, scrape_website_to_markdown, search_linkedin_tool],
             sub_agents=[],
@@ -68,7 +73,7 @@ class PersonalAssistant:
         self.manager_agent = Agent(
             name="manager_agent",
             description="Manager agent",
-            model="openai/gpt-4o",
+            model=manager_model,
             system_prompt=ASSISTANT_MANAGER_PROMPT.format(date_time=get_current_date_time()),
             tools=[],
             sub_agents=[
