@@ -49,3 +49,16 @@ class TelegramChannel:
         except TelegramError as e:
             print(f"TelegramChannel Error receiving messages: {e}")
             return f"Failed to retrieve messages: {str(e)}"
+
+    def drop_pending_messages(self):
+        try:
+            loop = asyncio.get_event_loop()
+            updates = loop.run_until_complete(self.bot.get_updates(offset=self.offset))
+            if updates:
+                max_update_id = max(u.update_id for u in updates)
+                self.offset = max_update_id + 1
+                print(f"TelegramChannel: Dropped {len(updates)} pending messages. Next offset set to {self.offset}")
+            else:
+                print("TelegramChannel: No pending messages to drop.")
+        except TelegramError as e:
+            print(f"TelegramChannel Error dropping messages: {e}")

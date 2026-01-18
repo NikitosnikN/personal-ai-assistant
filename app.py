@@ -48,4 +48,5 @@ def monitor_channel(after_timestamp, config):
 
 if __name__ == "__main__":
     print("Personal Assistant Manager is running")
+    telegram.drop_pending_messages()
     monitor_channel(int(time.time()), config)
