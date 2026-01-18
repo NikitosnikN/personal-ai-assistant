@@ -25,7 +25,7 @@ config = {"configurable": {"thread_id": "1"}}
 def monitor_channel(after_timestamp, config):
     while True:
         new_messages = telegram.receive_messages(after_timestamp)
-        if new_messages:
+        if isinstance(new_messages, list) and new_messages:
             for message in new_messages:
                 sent_message = (
                     f"Message: {message['text']}\n"
@@ -33,6 +33,9 @@ def monitor_channel(after_timestamp, config):
                 )
                 answer = personal_assistant.invoke(sent_message, config=config)
                 telegram.send_message(answer)
+        elif isinstance(new_messages, str):
+            print(f"Telegram error: {new_messages}")
+
         after_timestamp = int(time.time())
         time.sleep(5)  # Sleep for 5 seconds before checking again
         

@@ -46,6 +46,6 @@ class Agent:
         self.agent = create_react_agent(
             llm, 
             tools=self.tools, 
-            state_modifier=self.system_prompt,
+            prompt=self.system_prompt,
             **({"checkpointer": self.memory} if self.memory else {"checkpointer": False}) # set to False to avoid "MULTIPLE_SUBGRAPHS" error
         )
