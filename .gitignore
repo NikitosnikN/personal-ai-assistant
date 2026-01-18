@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.env
+db/*.sqlite
+db/*.sqlite-wal
+db/*.sqlite-shm
+venv/
+.DS_Store
+.pytest_cache/
+token.json
